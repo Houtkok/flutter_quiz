@@ -2,11 +2,11 @@ import 'package:flutter_quiz_project/model/quiz.dart';
 
 class Answer{
   final String questionAnswer;
-
-  Answer({required this.questionAnswer});
+  final Question question;
+  Answer(this.question, {required this.questionAnswer});
 
   bool isCorrect(){
-    return true;
+    return questionAnswer == question.goodAnswer;
   }
 }
 
@@ -14,7 +14,7 @@ class Submission {
   final Map<Question,Answer> _answers = {};
 
   void addAnswer(Question question, String answer){
-    _answers[question] = Answer(questionAnswer: answer);
+    _answers[question] = Answer(question, questionAnswer: answer);
   }
 
   void removeAnswer(){
@@ -25,13 +25,13 @@ class Submission {
     int score = 0;
     for(var answer in _answers.values){
       if(answer.isCorrect()){
-        return score++;
+        score++;
       }
     }
     return score;
   }
 
-  Answer? getAnswerFor(Question question, String answer){
+  Answer? getAnswerFor(Question question){
     return _answers[question];
   }
 }

@@ -1,4 +1,3 @@
- 
 class Quiz {
   final String title;
   final List<Question> questions;
