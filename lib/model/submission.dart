@@ -12,6 +12,8 @@ class Answer{
 
 class Submission {
   final Map<Question,Answer> _answers = {};
+  final Quiz quiz;
+  Submission(this.quiz);
 
   void addAnswer(Question question, String answer){
     _answers[question] = Answer(question, questionAnswer: answer);
@@ -23,9 +25,11 @@ class Submission {
 
   int getScore(){
     int score = 0;
-    for(var answer in _answers.values){
-      if(answer.isCorrect()){
-        score++;
+    for (var question in quiz.questions) {
+      if (_answers.containsKey(question)) {
+        if (_answers[question]!.isCorrect()) {
+          score++;
+        }
       }
     }
     return score;

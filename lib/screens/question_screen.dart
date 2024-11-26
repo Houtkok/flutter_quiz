@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_project/model/quiz.dart';
+import 'package:flutter_quiz_project/model/submission.dart';
 import 'package:flutter_quiz_project/quiz_app.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen(
-      {super.key, required this.changeState, required this.quiz});
+      {super.key, required this.changeState, required this.quiz, required this.submission});
   final Function(QuizState) changeState;
   final Quiz quiz;
+  final Submission submission;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -43,10 +45,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
       });
     });
   }
-
+ 
   void submitAnswer() {
-    if (selectedAnswer[questionIndex] == null) {
+    String? selectedAnswer = widget.submission.getAnswerFor(widget.quiz.questions[questionIndex])?.questionAnswer;
+    if (selectedAnswer == null) {
       noSelection = true;
+    }
+    else{
+      widget.changeState(QuizState.started);
     }
     setState(() {
       showCorrect = true;
@@ -56,6 +62,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   void selectAnswer(String answer) {
     if(!showCorrect){
+      widget.submission.addAnswer(widget.quiz.questions[questionIndex], answer);
       setState(() {
         selectedAnswer[questionIndex] = answer;
         noSelection = false;
@@ -80,6 +87,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     String correctAnswer = widget.quiz.questions[questionIndex].goodAnswer;
+    String? userAnswer = widget.submission.getAnswerFor(widget.quiz.questions[questionIndex])?.questionAnswer;
     return MaterialApp(
       home: Scaffold(
         backgroundColor: appColor,
@@ -107,7 +115,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 var answer =
                     widget.quiz.questions[questionIndex].possibleAnswers[index];
                 bool isCorrect = answer == correctAnswer;
-                bool isSelected = selectedAnswer[questionIndex] == answer;
+                bool isSelected = userAnswer == answer;
                 Color answerColor = Colors.white;
                 if (showCorrect) {
                   if (noSelection) {

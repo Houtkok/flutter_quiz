@@ -32,7 +32,8 @@ void main() {
             title: 'What is the best programming laguage',
             possibleAnswers: ['Python', 'JS', 'R','Dart'],
             goodAnswer: 'Dart');
-        final submission = Submission();
+        final quiz = Quiz(title: 'Sample Quiz', questions: [quest1, quest2]);
+        final submission = Submission(quiz);
         submission.addAnswer(quest1, 'PhnomPenh');
         submission.addAnswer(quest2, 'Dart');
         final score = submission.getScore();
@@ -48,7 +49,8 @@ void main() {
             title: 'What is the best programming laguage',
             possibleAnswers: ['Python', 'JS', 'R','Dart'],
             goodAnswer: 'Dart');
-        final submission = Submission();
+        final quiz = Quiz(title: 'Sample Quiz', questions: [quest1, quest2]);
+        final submission = Submission(quiz);
         submission.addAnswer(quest1, 'PreyVeng');
         submission.addAnswer(quest2, 'JS');
         final score = submission.getScore();
